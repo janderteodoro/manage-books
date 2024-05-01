@@ -1,75 +1,54 @@
 const { mongoUri }  = require('../../config')
-const { MongoClient, ObjectId } = require('mongodb')
+const { MongoClient } = require('mongodb')
 const { v4: uuidV4 } = require('uuid')
 
-const client = new MongoClient(mongoUri)
+async function withMongoClient(callback) {
+  const client = new MongoClient(mongoUri)
+  try {
+    await client.connect()
+    return await callback(client)
+  } catch (error) {
+    console.log('error on mongo conexion')
+  } finally {
+    await client.close()
+  }
+}
 
 async function insertOneMongo({ db, collection, data }){
-    try {
-        await client.connect()
-        const response = await client.db(db).collection(collection).insertOne({ _id: uuidV4(), ...data})
-        return response
-    } catch(error) {
-        throw new Error(error)
-    } finally {
-        client.close()
-    }
+  return await withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).insertOne({ _id: uuidV4(), ...data})
+  })
 }
 
 async function deleteOneMongo({ db, collection, _id }) {
-    try {
-        await client.connect()
-        const response = await client.db(db).collection(collection).deleteOne({'_id': _id})
-        return response
-    } catch(error) {
-        throw new Error(error)
-    } finally {
-        client.close()
-    }
+  return await withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).deleteOne({'_id': _id})
+  })
 }
 
 async function findOneMongo({ db, collection, _id}) {
-    try {
-        await client.connect()
-        const response = await client.db(db).collection(collection).findOne({ '_id': _id })
-        return response 
-    } catch(error) {
-        throw new Error(error)
-    } finally {
-        client.close()
-
-    }
+  return await withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).findOne({ '_id': _id })
+  })
 }
 
 async function updateOneMongo({ db, collection, _id, newData }) {
-    try {
-        await client.connect()
-        const response = await client.db(db).collection(collection).updateOne({ '_id': _id }, { $set: newData })
-        return response
-    } catch(error) {
-        throw new Error(error)
-    } finally {
-        client.close()
-    }
+  return await withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).updateOne({ '_id': _id }, { $set: newData })
+  })  
 }
 
 async function listAllDataMongo({ db, collection }) {
-    try {
-        await client.connect()
-        const response = await client.db(db).collection(collection).find().toArray()
-        return response
-    } catch (error) {
-        throw new Error(error)
-    } finally {
-        client.close()
-    }
+  return await withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).find().toArray()
+  })
 }
 
 
 module.exports = {
-    insertOneMongo,
-    deleteOneMongo,
-    findOneMongo,
-    updateOneMongo,
-    listAllDataMongo,
+  insertOneMongo,
+  deleteOneMongo,
+  findOneMongo,
+  updateOneMongo,
+  listAllDataMongo,
 }
