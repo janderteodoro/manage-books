@@ -7,6 +7,7 @@ config({path: __envfile})
 
 module.exports = {
     mongoUri: process.env.MONGO_URI,
-    mongoDBName: process.env.MONGO_DBNAME,
-    mongoCollection: process.env.MONGO_COLLECTION
+    dbName: process.env.DB_BOOKS_NAME,
+    dbBooksCollection: process.env.DB_BOOKS_COLLECTION,
+    dbUserCollection: process.env.DB_USER_COLLECTION
 }
