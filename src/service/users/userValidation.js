@@ -6,6 +6,7 @@ function validateEmail(email) {
 function validateUserName(userName) {
   const userNameSplited = userName.split(' ')
   const isBiggerThan3 = userNameSplited.every(name =>  name.length > 3)
+  userName = userName.replace(/\s/g, '') 
   const isOnlyAlfa = /^[a-zA-Z]+$/.test(userName)
   return isBiggerThan3 && isOnlyAlfa
 }
