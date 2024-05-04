@@ -1,32 +1,38 @@
-module.exports = (service, config) => {
-  const getAllUsers = async ( request, reply ) => {
+module.exports = (service, config, middlewares) => {
+  const getAllUsers = async ( request, response ) => {
     const execute = await service.getAllUsers()
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const getOneUser = async ( request, reply ) => {
+  const getOneUser = async ( request, response ) => {
     const id = request.params.id
     const execute = await service.getOneUser(id)
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const createUser = async ( request, reply )=> {
+  const createUser = async ( request, response )=> {
     const userData = request.body
     const execute = await service.createUser(userData)
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const updateUser = async ( request, reply ) => {
+  const updateUser = async ( request, response ) => {
     const id = request.params.id
     const newData = request.body
     const execute = await service.updateUser( newData, id )
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const deleteUser = async ( request, reply ) => {
+  const deleteUser = async ( request, response ) => {
     const id = request.params.id
     const execute = await service.deleteUser(id)
-    reply.send(execute)
+    return response.send(execute)
+  }
+
+  const loginUser = async (request, response ) => {
+    const loginUserData = request.body
+    const execute = await service.loginUser(loginUserData)
+    return response.send(execute)
   }
 
   return {
@@ -34,6 +40,7 @@ module.exports = (service, config) => {
     getOneUser,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser,
   }
 }

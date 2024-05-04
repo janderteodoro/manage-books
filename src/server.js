@@ -1,29 +1,33 @@
-const fastify = require('fastify')({ logger: true })
+const express = require('express')
 const controller = require('./controller')
+const middlewares = require('./middlewares')
 
-fastify.get('/books', controller.controllerBooks.getAllBooks)
+const app = express()
 
-fastify.get('/books/:id', controller.controllerBooks.getOneBook)
+app.use(express.json())
 
-fastify.post('/books', controller.controllerBooks.createBook)
+app.get('/books', controller.controllerBooks.getAllBooks)
 
-fastify.patch('/books/:id', controller.controllerBooks.updateBook)
+app.get('/books/:id', controller.controllerBooks.getOneBook)
 
-fastify.delete('/books/:id', controller.controllerBooks.deleteBook)
+app.post('/books', controller.controllerBooks.createBook)
 
-fastify.post('/users', controller.controllerUsers.createUser)
+app.patch('/books/:id', controller.controllerBooks.updateBook)
 
-fastify.get('/users', controller.controllerUsers.getAllUsers)
+app.delete('/books/:id', controller.controllerBooks.deleteBook)
 
-fastify.get('/users/:id', controller.controllerUsers.getOneUser)
+app.post('/users', controller.controllerUsers.createUser)
 
-fastify.patch('/users/:id', controller.controllerUsers.updateUser)
+app.get('/users', controller.controllerUsers.getAllUsers)
 
-fastify.delete('/users/:id', controller.controllerUsers.deleteUser)
+app.get('/users/:id', controller.controllerUsers.getOneUser)
 
-fastify.listen({ port: 3000 }, (err) => {
-  if (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
+app.patch('/users/:id', controller.controllerUsers.updateUser)
+
+app.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
+
+app.post('/users/login', controller.controllerUsers.loginUser)
+
+app.listen(3000, () => {
+  console.log('server running... 🚀')
 })

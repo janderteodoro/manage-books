@@ -1,6 +1,6 @@
 const userValidation = require('./userValidation')
 
-module.exports = ( repository, config ) => {
+module.exports = ( repository, config, utils ) => {
   const getAllUsers = async () => {
     const responseDB = await repository.listAllDB({
       db: config.dbName, collection: config.dbUserCollection
@@ -43,11 +43,40 @@ module.exports = ( repository, config ) => {
     return responseDB
   }
 
+  const loginUser = async (loginUserData) => {
+    const isUserExists  = await repository.findOneFromEmail({
+      db: config.dbName, collection: config.dbUserCollection, email: loginUserData.email
+    })
+
+    if (!isUserExists) {
+      return {
+        success: false,
+        message: 'User not exists'
+      }
+    }
+
+    const tokenOptions = {
+      expiresIn: '1h'
+    }
+
+    const token = utils.jwtUtils.createToken({ 
+      userData: loginUserData,
+      jwtSecretKey: config.jwtSecretKey,
+      tokenOptions,
+    })
+
+    return {
+      token,
+      userData: isUserExists,
+    }
+  }
+
   return {
     getAllUsers,
     getOneUser,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
   }
 }

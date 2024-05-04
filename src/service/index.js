@@ -2,6 +2,7 @@ const serviceBooks = require('./books')
 const serviceUser = require('./users')
 const repository = require('../repository')
 const config = require('../config')
+const utils = require('../utils')
 
 module.exports = {
   getAllBooks: serviceBooks(repository, config).getAllBooks,
@@ -14,4 +15,5 @@ module.exports = {
   createUser: serviceUser(repository, config).createUser,
   updateUser: serviceUser(repository, config).updateUser,
   deleteUser: serviceUser(repository, config).deleteUser,
+  loginUser: serviceUser(repository, config, utils).loginUser,
 }

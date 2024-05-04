@@ -1,32 +1,32 @@
 module.exports = (service, config) => {
-  const getAllBooks = async ( request, reply ) => {
+  const getAllBooks = async ( request, response ) => {
     const execute = await service.getAllBooks()
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const getOneBook = async ( request, reply ) => {
+  const getOneBook = async ( request, response ) => {
     const id = request.params.id
     const execute = await service.getOneBook(id)
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const createBook = async ( request, reply ) => {
+  const createBook = async ( request, response ) => {
     const bookData = request.body
     const execute = await service.createBook(bookData)
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const updateBook = async ( request, reply ) => {
+  const updateBook = async ( request, response ) => {
     const id = request.params.id
     const newData = request.body
     const execute = await service.updateBook(newData, id)
-    reply.send(execute)
+    return response.send(execute)
   }
 
-  const deleteBook = async ( request, reply ) => {
+  const deleteBook = async ( request, response ) => {
     const id = request.params.id
     const execute = await service.deleteBook(id)
-    reply.send(execute)
+    return response.send(execute)
   }
     
   return  {
