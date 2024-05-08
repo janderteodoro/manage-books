@@ -16,7 +16,7 @@ app.patch('/books/:id', controller.controllerBooks.updateBook)
 
 app.delete('/books/:id', controller.controllerBooks.deleteBook)
 
-app.post('/users', controller.controllerUsers.createUser)
+app.post('/users', middlewares.validatePassword, middlewares.encryptPass, controller.controllerUsers.createUser)
 
 app.get('/users', controller.controllerUsers.getAllUsers)
 

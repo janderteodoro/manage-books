@@ -10,5 +10,6 @@ module.exports = {
   dbName: process.env.DB_BOOKS_NAME,
   dbBooksCollection: process.env.DB_BOOKS_COLLECTION,
   dbUserCollection: process.env.DB_USER_COLLECTION,
-  jwtSecretKey: process.env.SECRET_KEY
+  jwtSecretKey: process.env.SECRET_KEY,
+  secretSalt: process.env.SECRET_SALT,
 }
