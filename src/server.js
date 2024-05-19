@@ -26,7 +26,7 @@ app.patch('/users/:id', controller.controllerUsers.updateUser)
 
 app.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
 
-app.post('/users/login', controller.controllerUsers.loginUser)
+app.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
 
 app.listen(3000, () => {
   console.log('server running... 🚀')

@@ -30,6 +30,6 @@ module.exports = (userData) => {
   }
 
   return {
-    sucess: true
+    success: true
   }
 }

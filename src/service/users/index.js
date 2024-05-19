@@ -17,10 +17,10 @@ module.exports = ( repository, config, utils ) => {
 
   const createUser = async (userData) => {
     const isValidUser = userValidation(userData)
-    if (!isValidUser.sucess) {
-      return {
-        success: false,
-        message: `This data is wrong: ${isValidUser.property}`
+    if (!isValidUser.success) {
+      throw {
+        message: `This data is wrong: ${isValidUser.property}`,
+        status: 400
       }
     }
     const responseDB = await repository.insertOneDB({
@@ -49,9 +49,16 @@ module.exports = ( repository, config, utils ) => {
     })
 
     if (!isUserExists) {
-      return {
-        success: false,
-        message: 'User not exists'
+      throw {
+        message: 'User not exists',
+        status: 401
+      }
+    }
+
+    if (isUserExists.password != loginUserData.password) {
+      throw {
+        message: 'incorrect password',
+        status: 401,
       }
     }
 
