@@ -16,13 +16,7 @@ module.exports = ( repository, config, utils ) => {
   }
 
   const createUser = async (userData) => {
-    const isValidUser = userValidation(userData)
-    if (!isValidUser.success) {
-      throw {
-        message: `This data is wrong: ${isValidUser.property}`,
-        status: 400
-      }
-    }
+    userValidation(userData)
     const responseDB = await repository.insertOneDB({
       db: config.dbName, collection: config.dbUserCollection, data: userData
     })

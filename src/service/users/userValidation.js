@@ -16,20 +16,18 @@ module.exports = (userData) => {
   const userNameIsValid = validateUserName(`${userData.userName} ${userData.userSurname}`)
 
   if (!emailIsValid) {
-    return {
-      success: false,
-      property: 'email'
+    throw {
+      status: 400,
+      message: 'emai is not valid'
     }
   }
 
   if (!userNameIsValid) {
-    return {
-      success: false,
-      property: 'name or surname'
+    throw {
+      status: 400,
+      message: 'user name is not valid'
     }
   }
 
-  return {
-    success: true
-  }
+  return true
 }
