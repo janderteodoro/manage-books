@@ -1,32 +1,35 @@
 const express = require('express')
 const controller = require('./controller')
 const middlewares = require('./middlewares')
+const routes = require('./routes')
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/books', controller.controllerBooks.getAllBooks)
+app.use(routes)
 
-app.get('/books/:id', controller.controllerBooks.getOneBook)
+// app.get('/books', controller.controllerBooks.getAllBooks)
 
-app.post('/books', controller.controllerBooks.createBook)
+// app.get('/books/:id', controller.controllerBooks.getOneBook)
 
-app.patch('/books/:id', controller.controllerBooks.updateBook)
+// app.post('/books', controller.controllerBooks.createBook)
 
-app.delete('/books/:id', controller.controllerBooks.deleteBook)
+// app.patch('/books/:id', controller.controllerBooks.updateBook)
 
-app.post('/users', middlewares.validatePassword, middlewares.encryptPass, controller.controllerUsers.createUser)
+// app.delete('/books/:id', controller.controllerBooks.deleteBook)
 
-app.get('/users', controller.controllerUsers.getAllUsers)
+// app.post('/users', middlewares.validatePassword, middlewares.encryptPass, controller.controllerUsers.createUser)
 
-app.get('/users/:id', controller.controllerUsers.getOneUser)
+// app.get('/users', controller.controllerUsers.getAllUsers)
 
-app.patch('/users/:id', controller.controllerUsers.updateUser)
+// app.get('/users/:id', controller.controllerUsers.getOneUser)
 
-app.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
+// app.patch('/users/:id', controller.controllerUsers.updateUser)
 
-app.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
+// app.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
+
+// app.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
 
 app.listen(3000, () => {
   console.log('server running... 🚀')
