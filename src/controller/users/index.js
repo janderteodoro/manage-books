@@ -1,4 +1,6 @@
-module.exports = ({usersService, userValidation, repository, userSchema, config, middlewares}) => {
+module.exports = ({
+  usersService, userValidation, repository, userSchema, config
+}) => {
   const getAllUsers = async ( request, response ) => {
     try {
       const execute = await usersService.getAllUsers({ repository, config })
@@ -23,11 +25,11 @@ module.exports = ({usersService, userValidation, repository, userSchema, config,
   const createUser = async ( request, response )=> {
     try {
       const userData = request.body
-      // const { error } = userSchema.create.validate(userData)
+      const { error } = userSchema.create.validate(userData)
       
-      // if (error) {
-      //   return response.status(400).json({ error: error?.details[0]?.message })
-      // }
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
       
       const execute = await usersService.createUser({
         repository, config, userData, userValidation
