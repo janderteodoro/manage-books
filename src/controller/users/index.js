@@ -1,4 +1,4 @@
-module.exports = (service, config, middlewares) => {
+module.exports = ({service, userSchema, config, middlewares}) => {
   const getAllUsers = async ( request, response ) => {
     try {
       const execute = await service.getAllUsers()
@@ -21,6 +21,12 @@ module.exports = (service, config, middlewares) => {
   const createUser = async ( request, response )=> {
     try {
       const userData = request.body
+      const { error } = userSchema.create.validate(userData)
+      
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+      
       const execute = await service.createUser(userData)
       return response.status(201).json(execute)
     } catch (error) {
@@ -32,6 +38,11 @@ module.exports = (service, config, middlewares) => {
     try {
       const id = request.params.id
       const newData = request.body
+      const { error } = userSchema.update.validate(newData)
+
+      if(error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
       const execute = await service.updateUser( newData, id )
       return response.status(204).json(execute)
     } catch (error) {
