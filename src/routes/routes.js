@@ -11,9 +11,9 @@ router.delete('/books/:id', controller.controllerBooks.deleteBook)
 
 router.post('/users', middlewares.validatePassword, middlewares.encryptPass, controller.controllerUsers.createUser)
 router.get('/users', controller.controllerUsers.getAllUsers)
-.get('/users/:id', controller.controllerUsers.getOneUser)
-router.patch('/users/:id', controller.controllerUsers.updateUser)
-router.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
-router.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
+router.get('/users/:id', controller.controllerUsers.getOneUser)
+//router.patch('/users/:id', controller.controllerUsers.updateUser)
+//router.delete('/users/:id', middlewares.jwtValidate, controller.controllerUsers.deleteUser)
+//router.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
 
 module.exports = router
