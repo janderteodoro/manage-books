@@ -1,5 +1,5 @@
 module.exports = ({
-  usersService, userValidation, repository, userSchema, config
+  usersService, repository, userSchema, config
 }) => {
   const getAllUsers = async ( request, response ) => {
     try {
@@ -32,7 +32,7 @@ module.exports = ({
       }
       
       const execute = await usersService.createUser({
-        repository, config, userData, userValidation
+        repository, config, userData
       })
       return response.status(201).json(execute)
     } catch (error) {
