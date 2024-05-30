@@ -1,4 +1,4 @@
-module.exports = (service, config) => {
+module.exports = ({service, bookSchema, config}) => {
   const getAllBooks = async ( request, response ) => {
     try {
       const execute = await service.getAllBooks()
@@ -21,6 +21,12 @@ module.exports = (service, config) => {
   const createBook = async ( request, response ) => {
     try {
       const bookData = request.body
+      const { error } = bookSchema.create.validate(bookData)
+
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+
       const execute = await service.createBook(bookData)
       return response.status(201).json(execute)
     } catch (error) {
@@ -32,6 +38,12 @@ module.exports = (service, config) => {
     try {
       const id = request.params.id
       const newData = request.body
+      const { error } = bookSchema.update.validate(newData)
+
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+      
       const execute = await service.updateBook(newData, id)
       return response.status(204).json(execute)
     } catch (error) {

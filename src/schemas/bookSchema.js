@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-module.exports = { 
+module.exports = {
   create: Joi.object().keys({
     title: Joi.string().required(),
     author: Joi.string().required(),

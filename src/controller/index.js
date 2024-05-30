@@ -6,6 +6,6 @@ const middlewares = require('../middlewares')
 const { userSchema, bookSchema } = require('../schemas')
 
 module.exports = {
-  controllerBooks: controllerBooks(service, config, middlewares),
+  controllerBooks: controllerBooks({service, bookSchema, config, middlewares}),
   controllerUsers: controllerUsers({service, userSchema, config, middlewares})
 }
