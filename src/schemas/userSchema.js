@@ -14,7 +14,6 @@ module.exports = {
     userSurname: Joi.string().optional().min(3).max(20),
     email: Joi.string().optional().regex(emailRegex),
     password: Joi.string().optional().min(8).max(20),
-    authorization: Joi.string().required()
   }),
   login: Joi.object().keys({
     email: Joi.string().required().regex(emailRegex),

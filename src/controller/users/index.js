@@ -1,17 +1,21 @@
-module.exports = ({service, userSchema, config, middlewares}) => {
+module.exports = ({
+  usersService, repository, userSchema, config, utils
+}) => {
   const getAllUsers = async ( request, response ) => {
     try {
-      const execute = await service.getAllUsers()
+      const execute = await usersService.getAllUsers({ repository, config })
       return response.status(200).json(execute)
     } catch (error) {
-      return response.status(error.status || 500).json({ error })
+      return response.status(error.status || 500).json({error: error?.message})
     }
   }
 
   const getOneUser = async ( request, response ) => {
     try {
       const id = request.params.id
-      const execute = await service.getOneUser(id)
+      const execute = await usersService.getOneUser({
+        repository, config, id
+      })
       return response.status(200).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -27,7 +31,10 @@ module.exports = ({service, userSchema, config, middlewares}) => {
         return response.status(400).json({ error: error?.details[0]?.message })
       }
       
-      const execute = await service.createUser(userData)
+      const execute = await usersService.createUser({
+        repository, config, userData
+      })
+      
       return response.status(201).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -40,10 +47,14 @@ module.exports = ({service, userSchema, config, middlewares}) => {
       const newData = request.body
       const { error } = userSchema.update.validate(newData)
 
-      if(error) {
+      if (error) {
         return response.status(400).json({ error: error?.details[0]?.message })
       }
-      const execute = await service.updateUser( newData, id )
+
+      const execute = await usersService.updateUser({
+        repository, config, newData, id
+      })
+    
       return response.status(204).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -53,7 +64,9 @@ module.exports = ({service, userSchema, config, middlewares}) => {
   const deleteUser = async ( request, response ) => {
     try {
       const id = request.params.id
-      const execute = await service.deleteUser(id)
+      const execute = await usersService.deleteUser({
+        repository, config, id
+      })
       return response.status(204).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -63,7 +76,9 @@ module.exports = ({service, userSchema, config, middlewares}) => {
   const loginUser = async (request, response ) => {
     try {
       const loginUserData = request.body
-      const execute = await service.loginUser(loginUserData)
+      const execute = await usersService.loginUser({
+        repository, config, loginUserData, utils
+      })
       return response.status(200).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })

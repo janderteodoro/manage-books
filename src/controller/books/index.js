@@ -1,7 +1,11 @@
-module.exports = ({service, bookSchema, config}) => {
+module.exports = ({
+  booksService, bookSchema, config, repository,
+}) => {
   const getAllBooks = async ( request, response ) => {
     try {
-      const execute = await service.getAllBooks()
+      const execute = await booksService.getAllBooks({
+        repository, config
+      })
       return response.status(200).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -11,7 +15,9 @@ module.exports = ({service, bookSchema, config}) => {
   const getOneBook = async ( request, response ) => {
     try {
       const id = request.params.id
-      const execute = await service.getOneBook(id)
+      const execute = await booksService.getOneBook({
+        config, repository, id
+      })
       return response.status(200).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -27,7 +33,10 @@ module.exports = ({service, bookSchema, config}) => {
         return response.status(400).json({ error: error?.details[0]?.message })
       }
 
-      const execute = await service.createBook(bookData)
+      const execute = await booksService.createBook({
+        bookData, repository, config
+      })
+
       return response.status(201).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -44,7 +53,10 @@ module.exports = ({service, bookSchema, config}) => {
         return response.status(400).json({ error: error?.details[0]?.message })
       }
       
-      const execute = await service.updateBook(newData, id)
+      const execute = await booksService.updateBook({
+        newData, id, repository, config
+      })
+
       return response.status(204).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -54,7 +66,9 @@ module.exports = ({service, bookSchema, config}) => {
   const deleteBook = async ( request, response ) => {
     try {
       const id = request.params.id
-      const execute = await service.deleteBook(id)
+      const execute = await booksService.deleteBook({
+        id, repository, config
+      })
       return response.status(204).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
