@@ -1,32 +1,88 @@
-module.exports = (service, config) => {
-  const getAllUsers = async ( request, reply ) => {
-    const execute = await service.getAllUsers()
-    reply.send(execute)
+module.exports = ({
+  usersService, repository, userSchema, config, utils
+}) => {
+  const getAllUsers = async ( request, response ) => {
+    try {
+      const execute = await usersService.getAllUsers({ repository, config })
+      return response.status(200).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({error: error?.message})
+    }
   }
 
-  const getOneUser = async ( request, reply ) => {
-    const id = request.params.id
-    const execute = await service.getOneUser(id)
-    reply.send(execute)
+  const getOneUser = async ( request, response ) => {
+    try {
+      const id = request.params.id
+      const execute = await usersService.getOneUser({
+        repository, config, id
+      })
+      return response.status(200).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
   }
 
-  const createUser = async ( request, reply )=> {
-    const userData = request.body
-    const execute = await service.createUser(userData)
-    reply.send(execute)
+  const createUser = async ( request, response )=> {
+    try {
+      const userData = request.body
+      const { error } = userSchema.create.validate(userData)
+      
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+      
+      const execute = await usersService.createUser({
+        repository, config, userData
+      })
+      
+      return response.status(201).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
   }
 
-  const updateUser = async ( request, reply ) => {
-    const id = request.params.id
-    const newData = request.body
-    const execute = await service.updateUser( newData, id )
-    reply.send(execute)
+  const updateUser = async ( request, response ) => {
+    try {
+      const id = request.params.id
+      const newData = request.body
+      const { error } = userSchema.update.validate(newData)
+
+      if (error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+
+      const execute = await usersService.updateUser({
+        repository, config, newData, id
+      })
+    
+      return response.status(204).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
   }
 
-  const deleteUser = async ( request, reply ) => {
-    const id = request.params.id
-    const execute = await service.deleteUser(id)
-    reply.send(execute)
+  const deleteUser = async ( request, response ) => {
+    try {
+      const id = request.params.id
+      const execute = await usersService.deleteUser({
+        repository, config, id
+      })
+      return response.status(204).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
+  }
+
+  const loginUser = async (request, response ) => {
+    try {
+      const loginUserData = request.body
+      const execute = await usersService.loginUser({
+        repository, config, loginUserData, utils
+      })
+      return response.status(200).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
   }
 
   return {
@@ -34,6 +90,7 @@ module.exports = (service, config) => {
     getOneUser,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser,
   }
 }

@@ -32,6 +32,12 @@ async function findOneMongo({ db, collection, _id}) {
   })
 }
 
+async function findOneMongoFromEmail({ db, collection, email }) {
+  return withMongoClient(async (client) => {
+    return await client.db(db).collection(collection).findOne({ email })
+  }) 
+}
+
 async function updateOneMongo({ db, collection, _id, newData }) {
   return await withMongoClient(async (client) => {
     return await client.db(db).collection(collection).updateOne({ '_id': _id }, { $set: newData })
@@ -49,6 +55,7 @@ module.exports = {
   insertOneMongo,
   deleteOneMongo,
   findOneMongo,
+  findOneMongoFromEmail,
   updateOneMongo,
   listAllDataMongo,
 }
