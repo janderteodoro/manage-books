@@ -14,6 +14,6 @@ router.get('/users', controller.controllerUsers.getAllUsers)
 router.get('/users/:id', controller.controllerUsers.getOneUser)
 router.patch('/users/:id', controller.controllerUsers.updateUser)
 router.delete('/users/:id', /*middlewares.jwtValidate,*/ controller.controllerUsers.deleteUser)
-//router.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
+router.post('/users/login', middlewares.encryptPass, controller.controllerUsers.loginUser)
 
 module.exports = router

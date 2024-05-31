@@ -1,5 +1,5 @@
 module.exports = ({
-  usersService, repository, userSchema, config
+  usersService, repository, userSchema, config, utils
 }) => {
   const getAllUsers = async ( request, response ) => {
     try {
@@ -73,15 +73,17 @@ module.exports = ({
     }
   }
 
-  // const loginUser = async (request, response ) => {
-  //   try {
-  //     const loginUserData = request.body
-  //     const execute = await service.loginUser(loginUserData)
-  //     return response.status(200).json(execute)
-  //   } catch (error) {
-  //     return response.status(error.status || 500).json({ error })
-  //   }
-  // }
+  const loginUser = async (request, response ) => {
+    try {
+      const loginUserData = request.body
+      const execute = await usersService.loginUser({
+        repository, config, loginUserData, utils
+      })
+      return response.status(200).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
+  }
 
   return {
     getAllUsers,
@@ -89,6 +91,6 @@ module.exports = ({
     createUser,
     updateUser,
     deleteUser,
-    // loginUser,
+    loginUser,
   }
 }
