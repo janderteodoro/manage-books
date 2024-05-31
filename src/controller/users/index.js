@@ -34,6 +34,7 @@ module.exports = ({
       const execute = await usersService.createUser({
         repository, config, userData
       })
+      
       return response.status(201).json(execute)
     } catch (error) {
       return response.status(error.status || 500).json({ error })
@@ -46,7 +47,7 @@ module.exports = ({
       const newData = request.body
       const { error } = userSchema.update.validate(newData)
 
-      if(error) {
+      if (error) {
         return response.status(400).json({ error: error?.details[0]?.message })
       }
 
@@ -60,15 +61,17 @@ module.exports = ({
     }
   }
 
-  // const deleteUser = async ( request, response ) => {
-  //   try {
-  //     const id = request.params.id
-  //     const execute = await service.deleteUser(id)
-  //     return response.status(204).json(execute)
-  //   } catch (error) {
-  //     return response.status(error.status || 500).json({ error })
-  //   }
-  // }
+  const deleteUser = async ( request, response ) => {
+    try {
+      const id = request.params.id
+      const execute = await usersService.deleteUser({
+        repository, config, id
+      })
+      return response.status(204).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
+  }
 
   // const loginUser = async (request, response ) => {
   //   try {
@@ -85,7 +88,7 @@ module.exports = ({
     getOneUser,
     createUser,
     updateUser,
-    // deleteUser,
+    deleteUser,
     // loginUser,
   }
 }
