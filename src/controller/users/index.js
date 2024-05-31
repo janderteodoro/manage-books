@@ -40,21 +40,25 @@ module.exports = ({
     }
   }
 
-  // const updateUser = async ( request, response ) => {
-  //   try {
-  //     const id = request.params.id
-  //     const newData = request.body
-  //     const { error } = userSchema.update.validate(newData)
+  const updateUser = async ( request, response ) => {
+    try {
+      const id = request.params.id
+      const newData = request.body
+      const { error } = userSchema.update.validate(newData)
 
-  //     if(error) {
-  //       return response.status(400).json({ error: error?.details[0]?.message })
-  //     }
-  //     const execute = await service.updateUser( newData, id )
-  //     return response.status(204).json(execute)
-  //   } catch (error) {
-  //     return response.status(error.status || 500).json({ error })
-  //   }
-  // }
+      if(error) {
+        return response.status(400).json({ error: error?.details[0]?.message })
+      }
+
+      const execute = await usersService.updateUser({
+        repository, config, newData, id
+      })
+    
+      return response.status(204).json(execute)
+    } catch (error) {
+      return response.status(error.status || 500).json({ error })
+    }
+  }
 
   // const deleteUser = async ( request, response ) => {
   //   try {
@@ -80,7 +84,7 @@ module.exports = ({
     getAllUsers,
     getOneUser,
     createUser,
-    // updateUser,
+    updateUser,
     // deleteUser,
     // loginUser,
   }

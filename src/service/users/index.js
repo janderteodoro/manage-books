@@ -1,11 +1,13 @@
 const getAllUsers = require('./getAllUsers')
 const getOneUser = require('./getOneUser')
 const createUser = require('./createUser')
+const updateUser = require('./updateUser')
 
 module.exports = {
   getAllUsers,
   getOneUser,
-  createUser
+  createUser,
+  updateUser
 }
 
 // const userValidation = require('./userValidation')
