@@ -18,5 +18,6 @@ module.exports = async ({
   const responseDB = await repository.listAllDB({
     db: config.dbName, collection: config.dbBooksCollection, query
   })
+  
   return responseDB
 }

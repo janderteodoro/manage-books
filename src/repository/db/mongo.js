@@ -8,7 +8,7 @@ async function withMongoClient(callback) {
     await client.connect()
     return await callback(client)
   } catch (error) {
-    console.log('error on mongo conexion')
+    console.error('Error in conexion on mongo', error)
   } finally {
     await client.close()
   }
