@@ -44,9 +44,9 @@ async function updateOneMongo({ db, collection, _id, newData }) {
   })  
 }
 
-async function listAllDataMongo({ db, collection }) {
+async function listAllDataMongo({ db, collection, query }) {
   return await withMongoClient(async (client) => {
-    return await client.db(db).collection(collection).find().toArray()
+    return await client.db(db).collection(collection).find(query).toArray()
   })
 }
 

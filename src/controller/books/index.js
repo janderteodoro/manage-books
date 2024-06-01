@@ -3,8 +3,14 @@ module.exports = ({
 }) => {
   const getAllBooks = async ( request, response ) => {
     try {
+      const filters = {
+        author: request.query.author,
+        title: request.query.title,
+        year: request.query.year,
+      }
+
       const execute = await booksService.getAllBooks({
-        repository, config
+        repository, config, filters
       })
       return response.status(200).json(execute)
     } catch (error) {
